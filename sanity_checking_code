@@ -1,0 +1,39 @@
+#include <stdio.h>
+#include <stdlib.h>
+#include <math.h>
+#include "nvutility.h"
+
+#define MAGNITUDE 10
+
+#define INDX(iang, magnitude) ( NINT((180 - iang)*magnitude) )
+#define IANG(indx, magnitude) ( 180 - (NV_FLOAT64)indx/(NV_FLOAT64)magnitude )
+
+/******************************************************************************/
+NV_INT32 main(NV_INT32 argc, NV_CHAR **argv)
+{
+	NV_FLOAT64 angle, increment;
+	NV_INT32 index, magnitude;
+
+
+	if ( argc != 2 )
+	{
+		printf("usage:  %s pow10 (1,10,100,...)\n", argv[0]);
+		exit(-1);
+	}
+
+	magnitude = atoi( argv[1] );
+	printf("using magnitude %d\n", magnitude);
+	/* magnitude = 10; */
+
+	increment = 0.1;
+	angle = -180;
+	while ( angle < 180 )
+	{
+		index = INDX(angle, magnitude);
+		printf("%f %d <-> ", angle, index);	
+		printf("%d %f\n", index, IANG(index, magnitude));
+		angle += increment;
+	}
+
+	return 0;
+}
